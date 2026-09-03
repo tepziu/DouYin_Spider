@@ -3378,6 +3378,12 @@ class DYLoginApi:
             qr = qrcode.QRCode(border=1)
             qr.add_data(url)
             qr.make(fit=True)
+            try:
+                img = qr.make_image(fill_color="black", back_color="white")
+                img.save("qrcode.png")
+                logger.info("Đã lưu ảnh mã QR vào file qrcode.png để quét dễ dàng.")
+            except Exception:
+                pass
             qr.print_ascii(invert=True)
         except Exception as err:
             logger.warning(f"终端二维码渲染失败（可直接打开上面的链接）: {err}")

@@ -57,7 +57,12 @@ def handle_work_info(data):
     commnet_count = data['statistics']['comment_count']
     collect_count = data['statistics']['collect_count']
     share_count = data['statistics']['share_count']
-    video_addr = data['video']['play_addr']['url_list'][0]
+    # Luon lay truc tiep File Goc Master (chua nen lai cua Douyin)
+    vid = data.get('video', {}).get('play_addr', {}).get('uri', '')
+    if vid:
+        video_addr = f'https://aweme.snssdk.com/aweme/v1/play/?video_id={vid}&ratio=default'
+    else:
+        video_addr = data.get('video', {}).get('play_addr', {}).get('url_list', [''])[0]
     images = data['images']
     if not isinstance(images, list):
         images = []
@@ -126,9 +131,15 @@ def download_media(path, name, url, type):
         with open(path + '/' + name + '.jpg', mode="wb") as f:
             f.write(content)
     elif type == 'video':
-        res = requests.get(url, stream=True)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 musical_ly_25.1.1',
+        }
+        res = requests.get(url, headers=headers, stream=True, allow_redirects=True)
+        total_len = int(res.headers.get('Content-Length', 0))
         size = 0
         chunk_size = 1024 * 1024
+        if total_len > 0:
+            logger.info(f'Đang tải File Gốc Master: {total_len / (1024*1024):.2f} MB...')
         with open(path + '/' + name + '.mp4', mode="wb") as f:
             for data in res.iter_content(chunk_size=chunk_size):
                 f.write(data)

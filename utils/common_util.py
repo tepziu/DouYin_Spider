@@ -37,6 +37,9 @@ def load_env(env_path=None, *, bootstrap_creator=False, proxies=None):
 
     # Current live REST/WebSocket calls reuse the main-site Cookie.  Keep an
     # explicitly supplied DY_LIVE_COOKIES as an opt-in legacy override only.
+    if not dy_auth.cookie.get("UIFID"):
+        import secrets
+        dy_auth.cookie["UIFID"] = secrets.token_hex(192)
     dy_live_auth = dy_auth.live_auth(cookies_live)
     return dy_auth
 

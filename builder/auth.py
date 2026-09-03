@@ -258,6 +258,12 @@ class DouyinAuth:
         auth.ensure_http_session()
         if bootstrap_creator:
             auth.bootstrap_creator_session(proxies=proxies)
+        try:
+            DYLoginApi().save_credential(auth)
+            from loguru import logger
+            logger.info("Đã lưu thông tin đăng nhập thành công vào file .env")
+        except Exception as e:
+            pass
         return auth
 
     @classmethod
@@ -274,6 +280,12 @@ class DouyinAuth:
         auth.ensure_http_session()
         if bootstrap_creator:
             auth.bootstrap_creator_session(proxies=proxies)
+        try:
+            DYLoginApi().save_credential(auth)
+            from loguru import logger
+            logger.info("Đã lưu thông tin đăng nhập thành công vào file .env")
+        except Exception as e:
+            pass
         return auth
 
     @classmethod
@@ -409,6 +421,12 @@ class DouyinAuth:
         auth.ensure_http_session()
         if bootstrap_creator:
             auth.bootstrap_creator_session(proxies=proxies)
+        try:
+            DYLoginApi().save_credential(auth)
+            from loguru import logger
+            logger.info("Đã lưu thông tin đăng nhập thành công vào file .env")
+        except Exception as e:
+            pass
         return auth
 
     def ensure_http_session(self):

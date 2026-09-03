@@ -1,3 +1,5 @@
+import sys
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 # coding=utf-8
 import json
 import os
@@ -145,9 +147,14 @@ if __name__ == '__main__':
 
     # data_spider.spider_some_search_work(auth, query, require_num, base_path, 'all', sort_type, publish_time, filter_duration, search_range, content_type)
 
-    # 4 私信：用户链接转 uid 后建对话发一条
-    user_url = 'https://www.douyin.com/user/MS4wLjABAAAAaB23ankxsw7PIgXnKxCcLC9iJIadZMQQpS-KWVO8Y306zOksK9cUvT5QdoOIcsS6?from_tab_name=live'
-    content = "在吗"
-    to_user_id = DouyinAPI.get_user_info(auth, user_url)['user']['uid']
-    conversation_id, conversation_short_id, ticket = DouyinAPI.create_conversation(auth, to_user_id)
-    DouyinAPI.send_msg(auth, conversation_id, conversation_short_id, ticket, content)
+    # 3 搜索指定关键词的作品并自动下载
+    # query = "美食"
+    # require_num = 5
+    # data_spider.spider_some_search_work(auth, query, require_num, base_path, 'all', '0', '0', '', '0', '1')
+
+    # Tải thử nghiệm 2 video theo từ khóa
+    query = "风景"
+    require_num = 2
+    logger.info(f"Bắt đầu tìm kiếm và tải {require_num} video Douyin với từ khóa '{query}'...")
+    data_spider.spider_some_search_work(auth, query, require_num, base_path, 'all', '0', '0', '', '0', '1')
+    logger.info("Hoàn tất tải video mẫu!")

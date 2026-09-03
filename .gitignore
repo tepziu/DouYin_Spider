@@ -49,3 +49,6 @@ datas
 *.network-response
 /im_snapshot.txt
 /send_*.txt
+
+# QR code temporary image
+qrcode.png
