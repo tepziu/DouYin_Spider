@@ -193,9 +193,12 @@ class DouyinAPI:
         params.add_param("msToken", auth.msToken)
         params.with_a_bogus()
         params.with_verify_fp(auth)
-        # 这个接口在 secsdk 的 webSign 策略表里，末尾还要带 timestamp + 签名
-        resp = requests.get(params.signed_url(f'{DouyinAPI.douyin_url}{api}', auth),
-                            headers=headers.get(), cookies=auth.cookie, verify=False)
+        # Ưu tiên gửi URL chuẩn có a_bogus (không qua x-secsdk để tránh ArgusSecurityPlugin chặn)
+        req_url = f'{DouyinAPI.douyin_url}{api}?{params.toString()}'
+        resp = requests.get(req_url, headers=headers.get(), cookies=auth.cookie, verify=False)
+        if resp.status_code != 200:
+            resp = requests.get(params.signed_url(f'{DouyinAPI.douyin_url}{api}', auth),
+                                headers=headers.get(), cookies=auth.cookie, verify=False)
         check_risk_response(resp)
         result = resp.json()
         if hasattr(auth, "main_read_verified"):
@@ -239,9 +242,12 @@ class DouyinAPI:
         params.with_verify_fp(auth)
         params.add_param("msToken", auth.msToken)
         params.with_a_bogus()
-        # 这个接口在 secsdk 的 webSign 策略表里，末尾还要带 timestamp + 签名
-        resp = requests.get(params.signed_url(f'{DouyinAPI.douyin_url}{api}', auth),
-                            headers=headers.get(), cookies=auth.cookie, verify=False)
+        # Ưu tiên gửi URL chuẩn có a_bogus (không qua x-secsdk để tránh ArgusSecurityPlugin chặn)
+        req_url = f'{DouyinAPI.douyin_url}{api}?{params.toString()}'
+        resp = requests.get(req_url, headers=headers.get(), cookies=auth.cookie, verify=False)
+        if resp.status_code != 200:
+            resp = requests.get(params.signed_url(f'{DouyinAPI.douyin_url}{api}', auth),
+                                headers=headers.get(), cookies=auth.cookie, verify=False)
         check_risk_response(resp)
         result = resp.json()
         if hasattr(auth, "main_read_verified"):
